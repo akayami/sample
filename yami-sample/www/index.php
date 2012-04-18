@@ -1,4 +1,5 @@
 <?php
+$start = microtime(true);
 use yami\Router\Exception;
 
 use yami\Router\Route\Simple;
@@ -7,7 +8,6 @@ use yami\Http\Request;
 
 include('../inc/includePath.inc.php');
 
-$start = microtime(true);
 require_once('autoload.inc.php');
 require_once('main.conf.php');
 @include('local.conf.php');
