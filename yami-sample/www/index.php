@@ -22,7 +22,7 @@ use yami\Router\Controller;
  */
 $cont = Controller::getInstance();
 $cont->addRoute(new Simple('/', 'yamiSample\Main', 'defaultAction'), 0);
-$cont->addRoute(new Regex('#^/abc/query/(?<bbb>.+)/(?<perpage>.+)#', '\test\someController', 'someAction'), 1);
+$cont->addRoute(new Regex('#^/abc/query/(?<bbb>.+)/(?<perpage>.+)#', 'yamiSample\Main', 'specialAction'), 1);
 $cont->addRoute(new Regex('#^/error/(?<code>\d+)$#', 'yamiSample\Error', 'handle'), 1000);
 
 
@@ -33,7 +33,6 @@ try {
 } catch(Exception $e) {
 	$cont->route('/error/404');
 }
-
 $end = microtime(true);
 echo $end - $start;
 echo "<br>";

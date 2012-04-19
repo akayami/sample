@@ -2,8 +2,7 @@
 namespace yamiSample;
 
 use yami\Http\Request;
-
-use yamiSample\Router\Action\Controller as Controller;
+use yami\Router\Action\Controller as Controller;
 
 class Error extends Controller {
 
