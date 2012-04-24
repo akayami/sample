@@ -3,14 +3,14 @@ namespace yamiSample\Entity;
 
 use yami\ORM\Collection;
 
-class Authors extends Collection {
+class Stores extends Collection {
 
-	protected static $tableName = 'author';
+	protected static $tableName = 'store';
 	protected static $ids = array('id');
 	protected static $backend = 'default';
-	
+
 	public function getEntity(array $data) {
-		return new Author($data);
+		return new Store($data);
 	}
 
 }

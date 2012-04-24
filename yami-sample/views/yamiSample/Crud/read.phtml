@@ -1,0 +1,33 @@
+<?php
+$this->inject('layout/header');
+?>
+<div>
+<a href="add">Add New</a>
+</div>
+<?php 
+if(count($this->data)) {
+?>
+<table class="data">
+	<tr>
+	<?php foreach($this->data[0] as $col => $val) {?>
+	<th><?php echo $col?></th>
+	<?php }?>
+	<th></th>
+	<th></th>
+	<th></th>
+	</tr>
+  <?php foreach($this->data as $row) {?>
+  <tr>
+  	<?php foreach($row as $val) {?>
+    <td><?php echo $val?></td>
+    <?php }?>
+    <td><a href="delete?id=<?php echo $row['id']?>">Delete</a></td>
+    <td><a href="update?id=<?php echo $row['id']?>">Edit</a></td>
+  </tr>
+  <?php }?>
+</table>
+<?php
+}
+?>
+<?php
+$this->inject('layout/footer');

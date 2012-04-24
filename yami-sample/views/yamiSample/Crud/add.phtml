@@ -1,0 +1,36 @@
+<?php
+$this->inject('layout/header.phtml');
+?>
+<form action="" method="post">
+<fieldset>
+	<legend>New Item</legend>
+	<?php foreach($this->structure as $field) {
+		if($field['Key'] == "PRI") {
+	?>
+	<div>
+		<label><?php echo $field['Field']?></label>
+		<input readonly="readonly" type="text" name="data[<?php echo $field['Field']?>]" value="<?php echo (isset($this->data[$field['Field']]) ? $this->data[$field['Field']] : '')?>"/>	
+	</div>
+	<?php 
+		} elseif ($field['Type'] == 'timestamp') {
+	?>
+	<div>
+		<label><?php echo $field['Field']?></label>
+		<input disabled="disabled" type="text" name="data[<?php echo $field['Field']?>]" value="<?php echo (isset($this->data[$field['Field']]) ? $this->data[$field['Field']] : '')?>"/>
+	</div> 
+	<?php	
+		}else {
+	?>
+	<div>
+		<label><?php echo $field['Field']?></label>
+		<input type="text" name="data[<?php echo $field['Field']?>]" value="<?php echo (isset($this->data[$field['Field']]) ? $this->data[$field['Field']] : '')?>"/>
+	</div> 
+	<?php 
+		}
+	} 
+	?>
+	<button type="submit" name="action" value="insert">Add</button>
+</fieldset>
+</form>
+<?php
+$this->inject('layout/footer.phtml');

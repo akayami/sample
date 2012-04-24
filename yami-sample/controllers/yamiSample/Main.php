@@ -15,4 +15,10 @@ class Main extends Controller {
 		$this->view->bbb = Request::getInstance()->bbb;
 	}
 	
+	public function act() {
+		$this->disableViewRendering();
+		echo "hello";
+		//print_r(Request::getInstance());
+	}
+	
 }
