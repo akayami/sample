@@ -2,8 +2,6 @@
 /*
  * Storage Config
  */
-
-
 $config['db'] = array( 
 	'default' => array ( 
 		'master'  => array(
@@ -18,7 +16,7 @@ $config['db'] = array(
 				'password' => '',
 				'dbname' => 'bookstore',
 				'persistent' => false,
-				'adapter' => 'yami\Database\Adapter\PDO'
+				'adapter' => 'yami\Database\Adapter\Mysqli'
 			)
 		),
 		'slave' => array(
@@ -33,7 +31,7 @@ $config['db'] = array(
 				'password' => '',
 				'dbname' => 'bookstore',
 				'persistent' => false,
-				'adapter' => 'yami\Database\Adapter\PDO'
+				'adapter' => 'yami\Database\Adapter\Mysqli'
 			)
 		)
 	)
@@ -49,5 +47,19 @@ $config['mc'] = array(
 );
 
 
+/*
+ * Backend Configuration
+ */
 
-
+$config['backend'] = array(
+	'default' => array(
+		'manager' => 'yami\Mc\Manager',
+		'backend' => 'yami\ORM\Backend\Mc',
+		'namespace' => 'default',
+		'child' => array(
+			'manager' => 'yami\Database\Manager',
+			'backend' => 'yami\ORM\Backend\Db',
+			'namespace' => 'default',				
+		)
+	)
+);
