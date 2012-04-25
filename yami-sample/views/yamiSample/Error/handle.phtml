@@ -3,4 +3,5 @@ header('HTTP/1.0 '.$this->code.' '.$this->message, true, $this->code);
 ?>
 <?php $this->inject('layout/header')?>
 <h1><?php echo $this->code?> <?php echo $this->message?></h1>
+<h2><?php echo $this->body?></h2>
 <?php $this->inject('layout/footer')?>

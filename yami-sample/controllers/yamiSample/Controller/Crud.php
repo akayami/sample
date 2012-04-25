@@ -24,7 +24,7 @@ abstract class Crud extends Controller {
 	public function read() {
 		$col = $this->getCollection();
 		$this->view->data = $col::getAll();		
-		$this->view->setActionName('/yamiSample/Crud/read');
+		$this->view->setActionName('yamiSample/Crud/read');
 	}
 	
 	public function update() {
@@ -49,7 +49,7 @@ abstract class Crud extends Controller {
 		}
 		$this->view->data = $a;
 		$this->view->structure = $entity::getStructure();
-		$this->view->setActionName('/yamiSample/Crud/update');
+		$this->view->setActionName('yamiSample/Crud/update');
 	}
 	
 	public function create() {
@@ -59,7 +59,7 @@ abstract class Crud extends Controller {
 			$a->insert();
 		}
 		$this->view->structure = $entity::getStructure();
-		$this->view->setActionName('/yamiSample/Crud/add');
+		$this->view->setActionName('yamiSample/Crud/add');
 	}
 	
 	public function delete() {

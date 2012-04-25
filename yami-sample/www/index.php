@@ -39,7 +39,8 @@ $cont->addRoute(new Auto('\yamiSample'), 1001);
 try {
 	$cont->route(Request::getInstance()->REQUEST_URI);
 } catch(\Exception $e) {
-	$cont->route('/error/404');
+	Request::getInstance()->error = $e;
+	$cont->route('/error/'.$e->getCode());
 }
 $end = microtime(true);
 echo $end - $start;
