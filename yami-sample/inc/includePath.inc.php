@@ -14,6 +14,6 @@ $_incPaths = array(
 foreach($_incPaths as $key => $path) {
 	$_incPaths[$key] = $_incRoot.'/'.$path;
 }
-$_incPaths[] = '/home/t_rakowski/git/yami/yami/lib';
+$_incPaths[] = '/home/t_rakowski/dev/git/yami/yami/lib';
 
 set_include_path(implode(PATH_SEPARATOR, array_merge(explode(PATH_SEPARATOR, get_include_path()), $_incPaths)));

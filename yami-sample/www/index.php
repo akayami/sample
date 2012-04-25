@@ -1,4 +1,12 @@
 <?php
+use yami\Database\Sql\ConditionBlock;
+
+use yami\Database\Sql\Condition;
+
+use yami\Database\Sql\Field;
+
+use yami\Database\Sql\Select;
+
 use yami\Router\Route\Auto;
 
 use yami\Router\Route\Standard;
@@ -53,6 +61,40 @@ try {
 	Request::getInstance()->error = $e;
 	$cont->route('/error/'.$e->getCode());
 }
+
+$block = new ConditionBlock();
+$block->add("table.`somefield` LIKE {str:placeholder}");
+$block->add("`somefield` LIKE '%cock%'");
+
+$subBlock = new ConditionBlock('OR');
+$subBlock->add("table.`somefield` LIKE {str:placeholder}");
+$subBlock->add("table.`somefield` LIKE {str:placeholder}");
+$block->add($subBlock);
+//echo $block;
+
+
+
+
+// $condition = new Condition();
+// $condition->add("table.`somefield` LIKE {str:placeholder}")
+// $condition = new Condition("table.`somefield` LIKE {str:placeholder}");
+// print_r($condition);
+// $condition = new Condition("`somefield` LIKE '%cock%'");
+// print_r($condition);
+
+
+
+
+$select = new Select();
+$select->field('table.somefield as field')->field('table.anotherfield as field1');
+$select->from('table');
+$select->where('(somefield=1 AND someField=2 AND (a=5 or a=6))');
+// echo "<pre>";
+// print_r($select);
+//echo $select;
+
+
+
 $end = microtime(true);
 echo $end - $start;
 echo "<br>";
