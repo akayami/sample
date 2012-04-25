@@ -1,0 +1,81 @@
+<?php
+$this->inject('layout/header');
+?>
+<form action="" method="post">
+<fieldset>
+	<legend>Update Item</legend>
+	<?php foreach($this->structure as $field) {
+		if($field['Key'] == "PRI") {
+	?>
+	<div>
+		<label><?php echo $field['Field']?></label>
+		<input readonly="readonly" type="text" name="data[<?php echo $field['Field']?>]" value="<?php echo (isset($this->data[$field['Field']]) ? $this->data[$field['Field']] : '')?>"/>	
+	</div>
+	<?php 
+		} elseif ($field['Type'] == 'timestamp') {
+	?>
+	<div>
+		<label><?php echo $field['Field']?></label>
+		<input disabled="disabled" type="text" name="data[<?php echo $field['Field']?>]" value="<?php echo (isset($this->data[$field['Field']]) ? $this->data[$field['Field']] : '')?>"/>
+	</div> 
+	<?php	
+		} else {
+	?>
+	<div>
+		<label><?php echo $field['Field']?></label>
+		<input type="text" name="data[<?php echo $field['Field']?>]" value="<?php echo (isset($this->data[$field['Field']]) ? $this->data[$field['Field']] : '')?>"/>
+	</div> 
+	<?php 
+		}
+	} 
+	?>
+	<button type="submit" name="action" value="update">Update</button>
+</fieldset>
+</form>
+<fieldset>
+	<legend>Book Distribution</legend>
+	<fieldset>
+		<legend>Add <i><?php echo $this->data->name?></i> to a store</legend>
+		<form action="?" method="post">
+		<input name="id" value="<?php echo $this->data->id?>" type="hidden" />
+		<input name="item[book_id]" value="<?php echo $this->data->id?>" type="hidden" />
+		<input name="sub-action" value="<?php echo isset($this->storeData) ? 'updateStore' : 'addStore';?>" type="hidden">
+		<select name="item[store_id]">
+			<?php foreach($this->stores as $store) {?>
+			<option value="<?php echo $store->id?>" <?php echo ((isset($this->storeData) &&  $this->storeData->store_id == $store->id)  ? 'selected' : '')?>><?php echo $store->name?></option>
+			<?php }?>
+		</select>
+		<label>Price</label><input name="item[price]" value="<?php echo (isset($this->storeData) ? $this->storeData->price : '0.00') ?>"/>
+		<label>Quantity</label><input name="item[qty]" value="<?php echo (isset($this->storeData) ? $this->storeData->qty : '0') ?>"/>
+		<button type="submit">add</button>		
+		</form>
+	</fieldset>
+	<?php if(count($this->distribution) > 0) {?>
+	<table class="data">
+		<tr>
+		<th>Store Name</th>
+		<?php
+		$q = $this->distribution[0]->getArrayCopy(); 
+		foreach(array_flip(array_intersect_key($q, array_flip(array('price', 'qty')))) as $col) {?>
+		<th><?php echo $col?></th>
+		<?php }?>
+		<th></th>
+		<th></th>
+		</tr>
+	  <?php foreach($this->distribution as $row) {?>
+	  <tr>
+	  	<td><?php echo $row->getStore()->name?></td>
+	  	<?php
+	  	$q = $row->getArrayCopy(); 
+	  	foreach(array_intersect_key($q, array_flip(array('price', 'qty'))) as $val) {?>
+	    <td><?php echo $val?></td>
+	    <?php }?>
+	    <td><a href="?sub-action=removeStore&id=<?php echo $this->data['id']?>&store_id=<?php echo $row->store_id?>&book_id=<?php echo $row->book_id?>">Delete</a></td>
+	    <td><a href="?sub-action=editStore&id=<?php echo $this->data['id']?>&store_id=<?php echo $row->store_id?>&book_id=<?php echo $row->book_id?>">Edit</a></td>
+	  </tr>
+	  <?php }?>
+	</table>
+	<?php }?>
+</fieldset>
+<?php
+$this->inject('layout/footer');

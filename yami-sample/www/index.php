@@ -29,6 +29,17 @@ $cont->addRoute(new Regex('#^/author/update(/)*#', 'yamiSample\Author', 'update'
 $cont->addRoute(new Regex('#^/author/delete(/)*#', 'yamiSample\Author', 'delete'), 0);
 $cont->addRoute(new Regex('#^/author/add(/)*#', 'yamiSample\Author', 'create'), 0);
 
+$cont->addRoute(new Regex('#^/book/list(/)*#', 'yamiSample\Book', 'read'), 0);
+$cont->addRoute(new Regex('#^/book/update(/)*#', 'yamiSample\Book', 'update'), 0);
+$cont->addRoute(new Regex('#^/book/delete(/)*#', 'yamiSample\Book', 'delete'), 0);
+$cont->addRoute(new Regex('#^/book/add(/)*#', 'yamiSample\Book', 'create'), 0);
+
+
+$cont->addRoute(new Regex('#^/store/list(/)*#', 'yamiSample\Store', 'read'), 0);
+$cont->addRoute(new Regex('#^/store/update(/)*#', 'yamiSample\Store', 'update'), 0);
+$cont->addRoute(new Regex('#^/store/delete(/)*#', 'yamiSample\Store', 'delete'), 0);
+$cont->addRoute(new Regex('#^/store/add(/)*#', 'yamiSample\Store', 'create'), 0);
+
 $cont->addRoute(new Regex('#^/abc/query/(?<bbb>.+)/(?<perpage>.+)#', 'yamiSample\Main', 'specialAction'), 2);
 $cont->addRoute(new Regex('#^/error/(?<code>\d+)$#', 'yamiSample\Error', 'handle'), 1000);
 $cont->addRoute(new Auto('\yamiSample'), 1001);

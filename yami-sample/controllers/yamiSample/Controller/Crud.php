@@ -41,11 +41,7 @@ abstract class Crud extends Controller {
 				$a = new $entity($this->request->get('id'));
 			}
 		} else {
-			try {
-				$a = new $entity($this->request->get('id'));
-			} catch(\Exeption $e) {
-				print_r($e);
-			}				
+			$a = new $entity($this->request->get('id'));
 		}
 		$this->view->data = $a;
 		$this->view->structure = $entity::getStructure();
