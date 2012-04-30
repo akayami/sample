@@ -32,7 +32,7 @@ abstract class Crud extends Controller {
 		if($this->request->get('action') == 'update') {
 			try {
 				$data = $this->request->get('data');
-				$a = new $entity($data['id']);
+				$a = new $entity();
 				foreach($data as $key => $data) {
 					$a[$key] = $data;
 				}

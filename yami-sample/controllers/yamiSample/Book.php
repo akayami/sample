@@ -51,7 +51,8 @@ class Book extends Crud {
 			$book = new BookEntity($this->request->get('id'));
 			$book->increment(array('view_counter' =>  1));
 			BookEntity::getBackend()->commitTransaction();
-		} catch(Exception $e) {
+		} catch(\Exception $e) {
+			//throw $e;
 			BookEntity::getBackend()->rollbackTransaction();
 			error_log('rollback');
 		}
