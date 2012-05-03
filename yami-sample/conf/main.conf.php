@@ -57,7 +57,7 @@ $config['redis'] = array(
 			'shared' => array(			
 				'port' => 6379,
 				'timeout' => 2,
-				'persistent' => true
+				'persistent' => false
 			)
 		)
 	)
@@ -92,16 +92,81 @@ $config['mc'] = array(
 // );
 
 
+
+/**
+ * Mc -> Mysql
+ * @var unknown_type
+ */
+
+// $config['backend'] = array(
+// 		'default' => array(
+// 			'manager' => 'yami\Database\Manager',
+// 			'backend' => 'yami\ORM\Backend\Db',
+// 			'namespace' => 'default'
+// 		)
+// );
+
+
+
+
+/**
+ * Mc -> Mysql
+ * @var unknown_type
+ */
+
+// $config['backend'] = array(
+// 		'default' => array(
+// 				'manager' => 'yami\Mc\Manager',
+// 				'backend' => 'yami\ORM\Backend\Mc',
+// 				'namespace' => 'default',
+// 				'child' => array(
+// 						'manager' => 'yami\Database\Manager',
+// 						'backend' => 'yami\ORM\Backend\Db',
+// 						'namespace' => 'default',
+// 				)
+// 		)
+// );
+
+
+/**
+ * Mc-> Redis -> Mysql
+ * @var unknown_type
+ */
 $config['backend'] = array(
 		'default' => array(
-				'manager' => 'yami\Redis\Manager',
-				'backend' => 'yami\ORM\Backend\Redis',
+				
+				'manager' => 'yami\Mc\Manager',
+				'backend' => 'yami\ORM\Backend\Mc',
 				'namespace' => 'default',
 				'child' => array(
-						'manager' => 'yami\Database\Manager',
-						'backend' => 'yami\ORM\Backend\Db',
-						'namespace' => 'default',
+				
+					'manager' => 'yami\Redis\Manager',
+					'backend' => 'yami\ORM\Backend\Redis',
+					'namespace' => 'default',
+					'child' => array(
+							'manager' => 'yami\Database\Manager',
+							'backend' => 'yami\ORM\Backend\Db',
+							'namespace' => 'default',
+					)
 				)
 		)
 );
 
+
+/**
+ * Redis -> Mysql
+ * @var unknown_type
+ */
+
+// $config['backend'] = array(
+// 		'default' => array(
+// 				'manager' => 'yami\Redis\Manager',
+// 				'backend' => 'yami\ORM\Backend\Redis',
+// 				'namespace' => 'default',
+// 				'child' => array(
+// 						'manager' => 'yami\Database\Manager',
+// 						'backend' => 'yami\ORM\Backend\Db',
+// 						'namespace' => 'default',
+// 				)
+// 		)
+// );

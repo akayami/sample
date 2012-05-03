@@ -7,11 +7,11 @@ use yami\Router\Action\Controller;
 
 class Store extends Crud {
 
-	public $collection = '\yamiSample\Entity\Store';
+	public $collection = '\yamiSample\Entity\Stores';
 	public $entity = '\yamiSample\Entity\Store';
 
 	public function getCollection() {
-		return '\yamiSample\Entity\Store';
+		return '\yamiSample\Entity\Stores';
 	}
 
 	public function getEntity() {
