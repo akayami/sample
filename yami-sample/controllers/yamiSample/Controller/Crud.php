@@ -23,7 +23,7 @@ abstract class Crud extends Controller {
 	
 	public function read() {
 		$col = $this->getCollection();
-		$this->view->data = $col::getAll();		
+		$this->view->data = $col::select()->execute();
 		$this->view->setActionName('yamiSample/Crud/read');
 	}
 	
