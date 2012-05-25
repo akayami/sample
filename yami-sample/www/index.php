@@ -1,4 +1,8 @@
 <?php
+use yamiSample\Entity\Authors;
+
+use yami\Database\Sql\Expression;
+
 use yami\Database\Sql\ConditionBlock;
 
 use yami\Database\Sql\Condition;
@@ -24,6 +28,7 @@ $start = microtime(true);
 include('../inc/includePath.inc.php');
 
 require_once('autoload.inc.php');
+//require_once('dbonly.conf.php');
 require_once('main.conf.php');
 @include('local.conf.php');
 
@@ -58,42 +63,11 @@ $cont->addRoute(new Auto('\yamiSample'), 1001);
 try {
 	$cont->route(Request::getInstance()->REQUEST_URI);
 } catch(\Exception $e) {
-	Request::getInstance()->error = $e;
-	$cont->route('/error/'.$e->getCode());
+// 	echo $e->getPrevious()->getMessage();
+// 	throw $e->getPrevious();
+ 	Request::getInstance()->error = $e;
+ 	$cont->route('/error/'.$e->getCode());
 }
-
-$block = new ConditionBlock();
-$block->add("table.`somefield` LIKE {str:placeholder}");
-$block->add("`somefield` LIKE '%cock%'");
-
-$subBlock = new ConditionBlock('OR');
-$subBlock->add("table.`somefield` LIKE {str:placeholder}");
-$subBlock->add("table.`somefield` LIKE {str:placeholder}");
-$block->add($subBlock);
-//echo $block;
-
-
-
-
-// $condition = new Condition();
-// $condition->add("table.`somefield` LIKE {str:placeholder}")
-// $condition = new Condition("table.`somefield` LIKE {str:placeholder}");
-// print_r($condition);
-// $condition = new Condition("`somefield` LIKE '%cock%'");
-// print_r($condition);
-
-
-
-
-$select = new Select();
-$select->field('table.somefield as field')->field('table.anotherfield as field1');
-$select->from('table');
-$select->where('(somefield=1 AND someField=2 AND (a=5 or a=6))');
-// echo "<pre>";
-// print_r($select);
-//echo $select;
-
-
 
 $end = microtime(true);
 echo $end - $start;

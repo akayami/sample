@@ -12,7 +12,8 @@ class StoreBook extends Entity {
 	protected static $backend = 'default';
 	
 	public static function byBook(Book $book) {
-		return StoresBooks::select()->where(Condition::make('book_id', $book->id))->execute();
+		return StoresBooks::select()->where('book_id={int:book_id}')->execute(array('book_id' => $book->id));
+		//return StoresBooks::select()->where(Condition::make('book_id', $book->id))->execute();
 	}
 	
 	public function getStore() {

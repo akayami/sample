@@ -1,17 +1,8 @@
 <?php
-// use yami\Database\Sql\Condition;
-
-// use yami\Database\Sql\ConditionBlock;
-
-// use yami\Database\Sql\Field;
-
+namespace yami\Database\Sql;
 // use yami\Database\Sql\Table;
 
-use yami\Database\Sql2\Condition;
-
-use yami\Database\Sql2\Select;
-
-use yami\Redis\Manager;
+// use yami\Database\Sql\Select;
 
 $start = microtime(true);
 
@@ -21,6 +12,66 @@ require_once('autoload.inc.php');
 require_once('main.conf.php');
 @include('local.conf.php');
 
+// $q = "SELECT * FROM ModelMedia WHERE model_id IN ({int:model_id}) AND status = 'active' AND type='image'";
+// $s = new Select($q);
+// print_r($s->structure->parsed);
+// echo $s;exit;
+
+
+
+$s = new Select('SELECT * FROM Model');
+$s->unsetTable()->table("Model JOIN ModelCategoryPair ON ModelCategoryPair.model_id=Model.model_id AND ModelCategoryPair.mcat_id='{int:categoryId}'");
+print_r($s->structure->parsed);
+echo $s;
+exit;
+
+
+$q = "SELECT * FROM asb WHERE screen LIKE {str:crap} LIMIT 5 OFFSET {int:sds}";
+$s = new Select($q);
+echo $s;exit;
+// $parser = new \PHPSQLParser($q);
+// print_r($parser->parsed);exit;
+
+$q = new Select("SELECT * FROM (SELECT * FROM ModelMedia WHERE model_id = 5 AND model_id IN ({int:model_id}) AND status = 'active' ORDER BY rand()) as t GROUP BY model_id");
+
+print_r($q);
+echo $q;
+exit;
+
+// $q = new Select('Select `field` from table1 JOIN table2 ON table2.id=table1.id');
+// //print_r($q);
+// echo $q;
+// exit;
+
+// $q = new Select();
+// $q->addField(new Field('*'));
+// $q->addTable(new Table('table1', 'tableAlias1'));
+// $q->addTable(new Table('table2', 'alias2', 'JOIN', new Condition(new ConditionField('table1.someField'), new Operator('='), new ConditionField('table2.someField'))));
+// $q->addCondition(new Condition(new ConditionField('table1.someField'), new Operator('LIKE'), "%cock%"));
+// echo $q->__toString();
+// exit;
+// $c1 = new ConditionBlock('OR');
+// $c1->add(new Condition( new ConditionField('Field'), new Operator('='), 5))->add(new Condition( new ConditionField('Field'), new Operator('='), 4));
+// $q->addCondition($c1);
+// $q->addAggregate(new Aggregate('table1.someField'));
+// $q->addHaving(new Condition(new ConditionField('someField'), new Operator('>'), '10'));
+// $q->addOrder(new Order('someField'));
+// $q->addLimit(new Limit(50));
+
+// $p = 'tom';
+// $test(&$p);
+
+// function test($a) {
+// 	echo $a;
+// }
+
+
+// echo $q;
+// echo "\n\n";
+// $q1 = new Select($q->__toString());
+// echo $q1;
+// echo "\n\n";
+// exit;
 
 // $parser = new PHPSQLParser("GROUP BY a, b, table.c");
 // print_r($parser->parsed);
@@ -57,8 +108,9 @@ $q = 'SELECT * FROM t1 UNION ALL SELECT * FROM t2 UNION ALL SELECT * FROM t3 UNI
 $q = new Select($q);
 //print_r($q);
 //print_r($q);
-echo $q;
+$q->__toString();
 exit;
+//exit;
 //exit;
 //$sql = new Select($q);
 

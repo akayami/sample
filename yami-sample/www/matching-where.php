@@ -8,20 +8,24 @@ require_once('main.conf.php');
 @include('local.conf.php');
 
 $examples = array(
-		"somefield=1 AND somefield=2 OR A=null AND b=whatever xor p=ass",
-//		"somefield=1 AND someField=2 AND (a=15 or a=16 OR (a=115 AND a=116)) AND (a=25 or b=25 OR (a=225 AND a=226 OR (a=2225 AND a=2226)))"
+		//"somefield=1 AND somefield=2 OR A=null AND b=whatever xor p=ass",
+		"((a = 1 and b = 2) or c = 5 and x = 0 AND (someshit = 5 and someothershit = 100 XOR crap = 5))"
+		//"somefield = 1 AND someField = 2 AND (a = 15 or a = 16 OR (a = 115 AND a = 116)) AND (a = 25 or b = 25 OR (a = 225 AND a = 226 OR (a = 2225 AND a = 2226)))"
 );
 
-print_r($examples);
+// print_r($examples);
 
-echo "--------------\n";
+// echo "--------------\n";
 
 foreach($examples as $subject) {
 	$where = new Where($subject);
+	//echo $where;
+	//print_r($where);
 	
 //	recursiveSplit($subject);
 // 	/matchBlock($subject);
 }
+die("\n");
 
 function recursiveSplit($string, $layer = 0) {
 	preg_match_all("/\((([^()]*|(?R))*)\)/",$string,$matches);
