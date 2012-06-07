@@ -1,27 +1,9 @@
 <?php
-use yamiSample\Entity\Authors;
-
-use yami\Database\Sql\Expression;
-
-use yami\Database\Sql\ConditionBlock;
-
-use yami\Database\Sql\Condition;
-
-use yami\Database\Sql\Field;
-
-use yami\Database\Sql\Select;
-
-use yami\Router\Route\Auto;
-
-use yami\Router\Route\Standard;
-
-use yami\ORM\Backend\Manager;
-use yami\Router\Exception;
-use yami\Router\Route\Simple;
 use yami\Http\Request;
-use yami\Router\Route\Regex as Regex;
+use yami\Router\Route\Simple;
+use yami\Router\Route\Regex;
+use yami\Router\Route\Auto;
 use yami\Router\Controller;
-
 
 $start = microtime(true);
 
@@ -57,11 +39,24 @@ $cont->addRoute(new Regex('#^/abc/query/(?<bbb>.+)/(?<perpage>.+)#', 'yamiSample
 $cont->addRoute(new Regex('#^/error/(?<code>\d+)$#', 'yamiSample\Error', 'handle'), 1000);
 $cont->addRoute(new Auto('\yamiSample'), 1001);
 
+$uri = Request::getInstance()->REQUEST_URI;
+$parts = explode('/', $uri);
 
-//$cont->route(Request::getInstance()->REQUEST_URI);
-
+if($count = preg_match('#^(?P<lang>\w{2})(?:-(?P<country>\w{2})(?:-(?P<state>\w{2})(?:-(?P<city>\w+))?)?)?$#', $parts[1], $matches)) {
+	$prefix = $matches[0];
+	$lang = isset($matches['lang']) ? $matches['lang'] : null;
+	$country = isset($matches['country']) ? $matches['country'] : null;
+	$state = isset($matches['state']) ? $matches['state'] : null;
+	$city = isset($matches['city']) ? $matches['city'] : null;
+	array_shift($parts);
+	array_shift($parts);
+	$uri = '/'.implode('/', $parts);
+} else {
+	$uri = Request::getInstance()->REQUEST_URI;
+}
+print_r($uri);
 try {
-	$cont->route(Request::getInstance()->REQUEST_URI);
+	$cont->route($uri);
 } catch(\Exception $e) {
 // 	echo $e->getPrevious()->getMessage();
 // 	throw $e->getPrevious();
