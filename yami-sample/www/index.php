@@ -7,7 +7,6 @@ use yami\Router\Route\Regex;
 use yami\Router\Route\Auto;
 use yamiSample\Router\Controller;
 
-
 $oldHandler = set_error_handler(function($errno, $errstr, $errfile, $errline) {
 	$bypass = array(2);
 	if(!in_array($errno, $bypass)) {
