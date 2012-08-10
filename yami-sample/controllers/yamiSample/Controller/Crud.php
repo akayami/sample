@@ -3,9 +3,7 @@ namespace yamiSample\Controller;
 use yami\Http\Request;
 use yamiSample\Author;
 
-use yami\Router\Action\Controller;
-
-abstract class Crud extends Controller {
+abstract class Crud extends Standard {
 	
 	/**
 	 * 

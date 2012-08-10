@@ -9,7 +9,8 @@ $_incPaths = array(
 	'lib',
 	'controllers',
 	'views',
-	'templates'
+	'templates',
+	'filters'
 );
 foreach($_incPaths as $key => $path) {
 	$_incPaths[$key] = $_incRoot.'/'.$path;

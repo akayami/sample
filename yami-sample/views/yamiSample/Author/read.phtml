@@ -21,8 +21,8 @@ if(count($this->data)) {
   	<?php foreach($row as $val) {?>
     <td><?php echo $val?></td>
     <?php }?>
-    <td><a href="delete?id=<?php echo $row['id']?>">Delete</a></td>
-    <td><a href="update?id=<?php echo $row['id']?>">Edit</a></td>
+    <td><a href="delete?id=<?php echo $row['id']?>"><?php echo $this->text('Delete')?></a></td>
+    <td><a href="update?id=<?php echo $row['id']?>"><?php echo $this->text('Edit')?></a></td>
   </tr>
   <?php }?>
 </table>

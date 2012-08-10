@@ -4,8 +4,15 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">	
 </head>
 <body>
+<?php if(isset($this->special)) {?>
+<pre>
+<?php 
+print_r($this->special);
+?>
+</pre>
+<?php }?>
 <ul>
-	<li><a href="/author/list">Authors</a></li>
-	<li><a href="/book/list">Books</a></li>
-	<li><a href="/store/list">Stores</a></li>
+	<li><a href="<?php echo $this->uri('/author/list')?>"><?php echo $this->text('Authors')?></a></li>
+	<li><a href="<?php echo $this->uri('/book/list')?>"><?php echo $this->text('Books')?></a></li>
+	<li><a href="<?php echo $this->uri('/store/list')?>"><?php echo $this->text('Stores')?></a></li>
 </ul>

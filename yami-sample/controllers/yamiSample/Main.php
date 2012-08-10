@@ -1,14 +1,15 @@
 <?php
 namespace yamiSample;
 
+use yamiSample\Controller\Standard;
 use yami\Http\Request;
 
-use yami\Router\Action\Controller as Controller;
 
-class Main extends Controller {
 
+class Main extends Standard {
+	
 	public function defaultAction() {
-
+		
 	}
 	
 	public function specialAction() {

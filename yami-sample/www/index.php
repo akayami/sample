@@ -1,27 +1,19 @@
 <?php
-use yamiSample\Entity\Authors;
+use yamiSample\ContextLevel\Language;
 
-use yami\Database\Sql\Expression;
-
-use yami\Database\Sql\ConditionBlock;
-
-use yami\Database\Sql\Condition;
-
-use yami\Database\Sql\Field;
-
-use yami\Database\Sql\Select;
-
-use yami\Router\Route\Auto;
-
-use yami\Router\Route\Standard;
-
-use yami\ORM\Backend\Manager;
-use yami\Router\Exception;
-use yami\Router\Route\Simple;
 use yami\Http\Request;
-use yami\Router\Route\Regex as Regex;
-use yami\Router\Controller;
+use yami\Router\Route\Simple;
+use yami\Router\Route\Regex;
+use yami\Router\Route\Auto;
+use yamiSample\Router\Controller;
 
+
+$oldHandler = set_error_handler(function($errno, $errstr, $errfile, $errline) {
+	$bypass = array(2);
+	if(!in_array($errno, $bypass)) {
+		throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
+	}
+});
 
 $start = microtime(true);
 
@@ -32,10 +24,86 @@ require_once('autoload.inc.php');
 require_once('main.conf.php');
 @include('local.conf.php');
 
+
+class WhiteLabelFilter {	
+	protected $namespace;	
+	public function __construct($host) {
+		$this->namespace = $host;
+	}
+	
+	public function __toString() {
+		return $this->namespace.'\\';
+	}
+}
+
+class LanguageFilter {
+	protected $namespace;
+	public function __construct($language) {
+		$this->namespace = $language;
+	}
+	
+	public function __toString() {
+		return $this->namespace.'\\';
+	}
+	
+}
+
+$filters = array();
+
+$host = Request::getInstance()->HTTP_HOST;
+
+switch($host) {
+	case 'red.yami-sample.local':
+		$filters[] = new WhiteLabelFilter('red');
+		break;
+	
+	case 'white.yami-sample.local':
+		$filters[] = new WhiteLabelFilter('white');
+		break;
+	case 'www.yami-sample.local':
+		//$filters[] = new WhiteLabelFilter('www');
+		break;
+	default:		
+		break;
+		
+}
+
+$uri = Request::getInstance()->REQUEST_URI;
+$parts = explode('/', $uri);
+
+if($count = preg_match('#^(?P<lang>\w{2})(?:\:(?P<country>\w{2})(?:-(?P<state>\w{2})(?:-(?P<city>\w+))?)?)?$#', $parts[1], $matches)) {
+	$prefix = $matches[0];
+	if(isset($matches['lang'])) {
+		$filters[] = new LanguageFilter($matches['lang']);
+	}
+	$lang = isset($matches['lang']) ? $matches['lang'] : null;
+	$country = isset($matches['country']) ? $matches['country'] : null;
+	$state = isset($matches['state']) ? $matches['state'] : null;
+	$city = isset($matches['city']) ? $matches['city'] : null;
+	array_shift($parts);
+	array_shift($parts);
+	$uri = '/'.implode('/', $parts);
+} else {
+	$lang = 'en';
+	$country = 'us';
+	$state = 'qc';
+	$city = 'montreal';
+	$uri = Request::getInstance()->REQUEST_URI;
+}
+
+
+/**
+ * Object that handles loading of class context.
+ * @var unknown_type
+ */
+//$context = Language::make($lang);
+
+
 /** 
  * @var yami\Router\Controller
  */
 $cont = Controller::getInstance();
+$cont->setContext(Language::make($lang));
 $cont->addRoute(new Simple('/', 'yamiSample\Main', 'defaultAction'), 0);
 $cont->addRoute(new Regex('#^/author/list(/)*#', 'yamiSample\Author', 'read'), 0);
 $cont->addRoute(new Regex('#^/author/update(/)*#', 'yamiSample\Author', 'update'), 0);
@@ -57,11 +125,8 @@ $cont->addRoute(new Regex('#^/abc/query/(?<bbb>.+)/(?<perpage>.+)#', 'yamiSample
 $cont->addRoute(new Regex('#^/error/(?<code>\d+)$#', 'yamiSample\Error', 'handle'), 1000);
 $cont->addRoute(new Auto('\yamiSample'), 1001);
 
-
-//$cont->route(Request::getInstance()->REQUEST_URI);
-
 try {
-	$cont->route(Request::getInstance()->REQUEST_URI);
+	$cont->route($uri);
 } catch(\Exception $e) {
 // 	echo $e->getPrevious()->getMessage();
 // 	throw $e->getPrevious();
