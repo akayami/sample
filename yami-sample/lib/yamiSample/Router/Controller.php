@@ -1,6 +1,8 @@
 <?php
 namespace yamiSample\Router;
 
+use yamiSample\Filter;
+
 use yamiSample\ContextLevel;
 
 use yami\Router\Route;
@@ -13,23 +15,35 @@ class Controller extends yamiCtrl {
 
 	protected $context;
 	
+	protected $filters = array();
+	
 	public function setContext(ContextLevel $c) {
 		$this->context = $c;		
 	}
 
+	public function addFilter(Filter $filter) {
+		$this->filters[] = $filter;
+	}
+	
 	/**
 	 * (non-PHPdoc)
 	 * @see yami\Router.Controller::handleRoute()
 	 */
 	protected function handleRoute(Route $route) {
-		$possibles = array($this->context.$route->getController(), $route->getController());
+		$possibles = $this->context->get();
+		sort($possibles);
+		$possibles = array_reverse($possibles);
+		array_walk($possibles, function(&$item, $index, $extra) {
+			$item = $item.$extra;
+		}, $route->getController());
+		$possibles[] = $route->getController();
 		set_error_handler(function($errno, $errstr, $errfile, $errline) {
 			throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
 		});
 		$found = false;
 		foreach($possibles as $cont) {
 			try {
-				$a = new $cont($route->getAction());
+				$a = new $cont($route->getAction());				
 				$found = true;
 				break;
 			} catch(\ErrorException $e) {
@@ -57,11 +71,10 @@ class Controller extends yamiCtrl {
 	 * @return ActionController
 	 */
 	protected function applyFilters(ActionController $c, Route $route) {
-		global $filters;
 		set_error_handler(function($errno, $errstr, $errfile, $errline) {
 			throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
 		});
-		foreach($filters as $filter) {
+		foreach($this->filters as $filter) {
 			$execute = false;
 			$name = 'filter\\'.$filter.$route->getController();
 			try {				

@@ -20,13 +20,16 @@ class Language extends ContextLevel {
 		return new static($languageCode);
 	}
 	
-	
-	public function __toString() {
+	protected function prefix() {
 		switch($this->language) {
 			case 'en':
-				return '';
+				return array();
 			default:
-				return $this->language.'\\';
+				return array($this->language.'\\');
 		}
+	}
+	
+	public function __toString() {
+		return $this->prefix();
 	}
 }

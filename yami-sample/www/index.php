@@ -1,4 +1,8 @@
 <?php
+use yamiSample\ContextLevel\Geolocation;
+
+use yamiSample\Filter;
+
 use yamiSample\ContextLevel\Language;
 
 use yami\Http\Request;
@@ -23,63 +27,22 @@ require_once('autoload.inc.php');
 require_once('main.conf.php');
 @include('local.conf.php');
 
+/** 
+ * @var yami\Router\Controller
+ */
+$cont = Controller::getInstance();
+require('whitelabel.inc.php');			// Bootstrapping an imaginary White label
 
-class WhiteLabelFilter {	
-	protected $namespace;	
-	public function __construct($host) {
-		$this->namespace = $host;
-	}
-	
-	public function __toString() {
-		return $this->namespace.'\\';
-	}
-}
-
-class LanguageFilter {
-	protected $namespace;
-	public function __construct($language) {
-		$this->namespace = $language;
-	}
-	
-	public function __toString() {
-		return $this->namespace.'\\';
-	}
-	
-}
-
-$filters = array();
-
-$host = Request::getInstance()->HTTP_HOST;
-
-switch($host) {
-	case 'red.yami-sample.local':
-		$filters[] = new WhiteLabelFilter('red');
-		break;
-	
-	case 'white.yami-sample.local':
-		$filters[] = new WhiteLabelFilter('white');
-		break;
-	case 'www.yami-sample.local':
-		//$filters[] = new WhiteLabelFilter('www');
-		break;
-	default:		
-		break;
-		
-}
-
+/**
+ * Bootstrapping Language & Location Handling
+ */
 $uri = Request::getInstance()->REQUEST_URI;
 $parts = explode('/', $uri);
-
-/*
- * Url fromat
- * /fr/ca-qc-montreal/therest....
- * 
- */
 
 if($count = preg_match('#^(?P<lang>\w{2})(?:\:(?P<country>\w{2})(?:-(?P<state>\w{2})(?:-(?P<city>\w+))?)?)?$#', $parts[1], $matches)) {
 	$prefix = $matches[0];
 	if(isset($matches['lang'])) {
-		$filters[] = new LanguageFilter($matches['lang']);
+		$cont->addFilter(new Filter($matches['lang']));
 	}
 	$lang = isset($matches['lang']) ? $matches['lang'] : null;
 	$country = isset($matches['country']) ? $matches['country'] : null;
@@ -96,19 +59,15 @@ if($count = preg_match('#^(?P<lang>\w{2})(?:\:(?P<country>\w{2})(?:-(?P<state>\w
 	$uri = Request::getInstance()->REQUEST_URI;
 }
 
+$c = Language::make($lang);
+$c->append(Geolocation::make($country, $state, $city));
+
+$cont->setContext($c);
 
 /**
- * Object that handles loading of class context.
- * @var unknown_type
+ * End of Language & Location Bootstrap
  */
-//$context = Language::make($lang);
 
-
-/** 
- * @var yami\Router\Controller
- */
-$cont = Controller::getInstance();
-$cont->setContext(Language::make($lang));
 $cont->addRoute(new Simple('/', 'yamiSample\Main', 'defaultAction'), 0);
 $cont->addRoute(new Regex('#^/author/list(/)*#', 'yamiSample\Author', 'read'), 0);
 $cont->addRoute(new Regex('#^/author/update(/)*#', 'yamiSample\Author', 'update'), 0);
