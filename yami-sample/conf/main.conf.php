@@ -135,10 +135,10 @@ $config['mc'] = array(
 $config['backend'] = array(
 		'default' => array(
 				
-// 				'manager' => 'yami\Mc\Manager',
-// 				'backend' => 'yami\ORM\Backend\Mc',
-// 				'namespace' => 'default',
-// 				'child' => array(
+				'manager' => 'yami\Mc\Manager',
+				'backend' => 'yami\ORM\Backend\Mc',
+				'namespace' => 'default',
+				'child' => array(
 				
 					'manager' => 'yami\Redis\Manager',
 					'backend' => 'yami\ORM\Backend\Redis',
@@ -148,7 +148,7 @@ $config['backend'] = array(
 							'backend' => 'yami\ORM\Backend\Db',
 							'namespace' => 'default',
  					)
-// 				)
+				)
 		)
 );
 

@@ -8,7 +8,7 @@ use yami\Router\Route\Auto;
 use yamiSample\Router\Controller;
 
 $oldHandler = set_error_handler(function($errno, $errstr, $errfile, $errline) {
-	$bypass = array(2);
+	$bypass = array(2); // Skip triggering on error type 2
 	if(!in_array($errno, $bypass)) {
 		throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
 	}
@@ -69,6 +69,12 @@ switch($host) {
 
 $uri = Request::getInstance()->REQUEST_URI;
 $parts = explode('/', $uri);
+
+/*
+ * Url fromat
+ * /fr/ca-qc-montreal/therest....
+ * 
+ */
 
 if($count = preg_match('#^(?P<lang>\w{2})(?:\:(?P<country>\w{2})(?:-(?P<state>\w{2})(?:-(?P<city>\w+))?)?)?$#', $parts[1], $matches)) {
 	$prefix = $matches[0];
