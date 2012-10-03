@@ -18,7 +18,7 @@ class Main extends Standard {
 	
 	public function act() {
 		$this->disableViewRendering();
-		echo "hello";
+		//echo "hello";
 		//print_r(Request::getInstance());
 	}
 	

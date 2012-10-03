@@ -1,4 +1,6 @@
 <?php
+use yamiSample\I18n;
+
 use yamiSample\ContextLevel\Geolocation;
 
 use yamiSample\Filter;
@@ -11,12 +13,7 @@ use yami\Router\Route\Regex;
 use yami\Router\Route\Auto;
 use yamiSample\Router\Controller;
 
-$oldHandler = set_error_handler(function($errno, $errstr, $errfile, $errline) {
-	$bypass = array(2); // Skip triggering on error type 2
-	if(!in_array($errno, $bypass)) {
-		throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
-	}
-});
+
 
 $start = microtime(true);
 
@@ -27,11 +24,31 @@ require_once('autoload.inc.php');
 require_once('main.conf.php');
 @include('local.conf.php');
 
+
+$oldHandler = set_error_handler(function($errno, $errstr, $errfile, $errline) {
+ 	error_log($errno.':'.$errstr.' - [Line: '.$errline.'] '.$errfile);
+ 	$bypass = array(2, 8); // Skip triggering on error type 2
+ 	if(!in_array($errno, $bypass)) {
+ 		throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
+ 	}
+});
+
 /** 
  * @var yami\Router\Controller
  */
 $cont = Controller::getInstance();
 require('whitelabel.inc.php');			// Bootstrapping an imaginary White label
+
+
+// setlocale(LC_ALL, 'pl_PL.UTF-8');
+// bindtextdomain("default", "/home/t_rakowski/dev/locale");
+// textdomain("default");
+// $out = gettext('test');
+// if(mb_check_encoding($out, 'utf8') == true) {
+// 	echo "utf8";
+// }
+// echo $out;
+// exit;
 
 /**
  * Bootstrapping Language & Location Handling
@@ -59,9 +76,32 @@ if($count = preg_match('#^(?P<lang>\w{2})(?:\:(?P<country>\w{2})(?:-(?P<state>\w
 	$uri = Request::getInstance()->REQUEST_URI;
 }
 
+/**
+ * 
+ * @var I18n
+ */
+$i18n = new \yamiSample\I18n($lang, $country, $state, $city);
+
+
+/**
+ * This is defined for the view to wire itself into
+ * @var array
+ */
+$content = array(
+	'lang' => $lang,
+	'country' => $country,
+	'state' => $state,
+	'city' => $city	
+);
+
+$str = $lang.'_'.strtoupper($country);
+
+setlocale(LC_ALL, $str.'.UTF-8');
+bindtextdomain("default", "/home/t_rakowski/dev/locale");
+textdomain("default");
+
 $c = Language::make($lang);
 $c->append(Geolocation::make($country, $state, $city));
-
 $cont->setContext($c);
 
 /**
@@ -92,10 +132,10 @@ $cont->addRoute(new Auto('\yamiSample'), 1001);
 try {
 	$cont->route($uri);
 } catch(\Exception $e) {
-// 	echo $e->getPrevious()->getMessage();
-// 	throw $e->getPrevious();
+	ob_end_clean();
  	Request::getInstance()->error = $e;
- 	$cont->route('/error/'.$e->getCode());
+ 	$target = '/error/'.$e->getCode(); 	
+ 	$cont->route($target);
 }
 
 $end = microtime(true);

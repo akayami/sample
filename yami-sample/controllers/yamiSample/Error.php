@@ -3,8 +3,9 @@ namespace yamiSample;
 
 use yami\Http\Request;
 use yami\Router\Action\Controller as Controller;
+use yamiSample\Controller\Standard;
 
-class Error extends Controller {
+class Error extends Standard {
 
 	public function handle() {
 		$this->view->code = Request::getInstance()->code;
@@ -14,13 +15,17 @@ class Error extends Controller {
 				$message = 'Not Found';
 				break;
 			case 500:
-				$body = Request::getInstance()->error->getPrevious()->getMessage();
+				try {
+					$body = "Error Occured:".Request::getInstance()->error->getMessage();
+				} catch (\Exception $e) {
+					$body = "Error Occured";
+				}
 				$message = 'Server Error';
 				break;
 			default:
-				$message = 'Server Error';
-				$this->view->code = 500;
-				$body = Request::getInstance()->error->getPrevious()->getMessage();
+				$message = 'Service Unavailable';
+				$this->view->code = 503;
+				$body = "Service is temporarly unavilable.";
 				break;
 		}
 		$this->view->body = $body;

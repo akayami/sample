@@ -52,7 +52,7 @@ class Controller extends yamiCtrl {
 		}
 		restore_error_handler();
 		if(!$found) {
-			throw new \Exception('Failed to find a controller matching current context');
+			throw new \Exception('Failed to find a controller matching current context', 404);
 		}
 		try {
 			if($a->{$route->getAction()}() !== false) {
