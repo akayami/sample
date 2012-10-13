@@ -25,13 +25,13 @@ require_once('main.conf.php');
 @include('local.conf.php');
 
 
-$oldHandler = set_error_handler(function($errno, $errstr, $errfile, $errline) {
- 	error_log($errno.':'.$errstr.' - [Line: '.$errline.'] '.$errfile);
- 	$bypass = array(2, 8); // Skip triggering on error type 2
- 	if(!in_array($errno, $bypass)) {
- 		throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
- 	}
-});
+// $oldHandler = set_error_handler(function($errno, $errstr, $errfile, $errline) {
+//  	error_log($errno.':'.$errstr.' - [Line: '.$errline.'] '.$errfile);
+//  	$bypass = array(2, 8); // Skip triggering on error type 2
+//  	if(!in_array($errno, $bypass)) {
+//  		throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
+//  	}
+// });
 
 /** 
  * @var yami\Router\Controller

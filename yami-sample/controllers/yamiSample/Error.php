@@ -15,9 +15,9 @@ class Error extends Standard {
 				$message = 'Not Found';
 				break;
 			case 500:
-				try {
+				if(Request::getInstance()->error) {
 					$body = "Error Occured:".Request::getInstance()->error->getMessage();
-				} catch (\Exception $e) {
+				} else {
 					$body = "Error Occured";
 				}
 				$message = 'Server Error';

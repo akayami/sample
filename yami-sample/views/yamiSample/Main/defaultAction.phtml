@@ -1,6 +1,5 @@
 <?php echo $this->inject('layout/header'); ?>
-<?php $a = array();?>
-<?php echo $a[0];?>
+<?php echo $a[0]?>
 <h1><?php echo $this->_('test')?></h1>
 <h1><?php echo $this->ngettext('Hello %d World', 'Hello %d Worlds', array('count' => $x = rand(0, 10))); ?></h1>
 <?php echo $this->inject('layout/footer'); ?>
