@@ -40,15 +40,6 @@ $cont = Controller::getInstance();
 require('whitelabel.inc.php');			// Bootstrapping an imaginary White label
 
 
-// setlocale(LC_ALL, 'pl_PL.UTF-8');
-// bindtextdomain("default", "/home/t_rakowski/dev/locale");
-// textdomain("default");
-// $out = gettext('test');
-// if(mb_check_encoding($out, 'utf8') == true) {
-// 	echo "utf8";
-// }
-// echo $out;
-// exit;
 
 /**
  * Bootstrapping Language & Location Handling
@@ -95,9 +86,8 @@ $content = array(
 );
 
 $str = $lang.'_'.strtoupper($country);
-
 setlocale(LC_ALL, $str.'.UTF-8');
-bindtextdomain("default", "/home/t_rakowski/dev/locale");
+bindtextdomain("default", "../locale");
 textdomain("default");
 
 $c = Language::make($lang);
