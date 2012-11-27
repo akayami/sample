@@ -9,7 +9,7 @@ use yamiSample\Entity\Book as BookEntity;
 use yamiSample\Controller\Crud;
 
 use yamiSample\Entity\Authors;
-use yami\Router\Action\Controller;
+use Bacon\Router\Action\Controller;
 
 class Book extends Crud {
 

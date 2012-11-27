@@ -1,6 +1,6 @@
 <?php
 namespace yamiSample\Controller;
-use yami\Http\Request;
+use Bacon\Http\Request;
 use yamiSample\Author;
 
 abstract class Crud extends Standard {

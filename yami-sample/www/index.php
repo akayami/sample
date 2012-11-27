@@ -7,10 +7,10 @@ use yamiSample\Filter;
 
 use yamiSample\ContextLevel\Language;
 
-use yami\Http\Request;
-use yami\Router\Route\Simple;
-use yami\Router\Route\Regex;
-use yami\Router\Route\Auto;
+use Bacon\Http\Request;
+use Bacon\Router\Route\Simple;
+use Bacon\Router\Route\Regex;
+use Bacon\Router\Route\Auto;
 use yamiSample\Router\Controller;
 
 
@@ -33,8 +33,8 @@ require_once('main.conf.php');
 //  	}
 // });
 
-/** 
- * @var yami\Router\Controller
+/**
+ * @var Bacon\Router\Controller
  */
 $cont = Controller::getInstance();
 require('whitelabel.inc.php');			// Bootstrapping an imaginary White label
@@ -68,7 +68,7 @@ if($count = preg_match('#^(?P<lang>\w{2})(?:\:(?P<country>\w{2})(?:-(?P<state>\w
 }
 
 /**
- * 
+ *
  * @var I18n
  */
 $i18n = new \yamiSample\I18n($lang, $country, $state, $city);
@@ -82,7 +82,7 @@ $content = array(
 	'lang' => $lang,
 	'country' => $country,
 	'state' => $state,
-	'city' => $city	
+	'city' => $city
 );
 
 $str = $lang.'_'.strtoupper($country);
@@ -122,9 +122,10 @@ $cont->addRoute(new Auto('\yamiSample'), 1001);
 try {
 	$cont->route($uri);
 } catch(\Exception $e) {
+	throw $e;
 	ob_end_clean();
  	Request::getInstance()->error = $e;
- 	$target = '/error/'.$e->getCode(); 	
+ 	$target = '/error/'.$e->getCode();
  	$cont->route($target);
 }
 

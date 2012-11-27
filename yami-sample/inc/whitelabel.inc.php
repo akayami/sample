@@ -1,5 +1,5 @@
 <?php
-use yami\Http\Request;
+use Bacon\Http\Request;
 
 use yamiSample\Filter;
 

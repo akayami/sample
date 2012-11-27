@@ -5,11 +5,11 @@ use yamiSample\Filter;
 
 use yamiSample\ContextLevel;
 
-use yami\Router\Route;
+use Bacon\Router\Route;
 
-use yami\Router\Controller as yamiCtrl;
+use Bacon\Router\Controller as yamiCtrl;
 
-use yami\Router\Action\Controller as ActionController;
+use Bacon\Router\Action\Controller as ActionController;
 
 class Controller extends yamiCtrl {
 
@@ -27,7 +27,7 @@ class Controller extends yamiCtrl {
 	
 	/**
 	 * (non-PHPdoc)
-	 * @see yami\Router.Controller::handleRoute()
+	 * @see Bacon\Router.Controller::handleRoute()
 	 */
 	protected function handleRoute(Route $route) {
 		$possibles = $this->context->get();

@@ -2,7 +2,7 @@
 namespace yamiSample\Controller;
 use yamiSample\View;
 
-use yami\Router\Action\Controller;
+use Bacon\Router\Action\Controller;
 
 class Standard extends Controller {
 	

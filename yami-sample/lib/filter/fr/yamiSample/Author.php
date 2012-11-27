@@ -1,7 +1,7 @@
 <?php
 namespace filter\fr\yamiSample;
 
-use yami\Router\Action\Controller;
+use Bacon\Router\Action\Controller;
 
 class Author {
 	

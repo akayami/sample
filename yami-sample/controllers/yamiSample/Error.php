@@ -1,8 +1,8 @@
 <?php
 namespace yamiSample;
 
-use yami\Http\Request;
-use yami\Router\Action\Controller as Controller;
+use Bacon\Http\Request;
+use Bacon\Router\Action\Controller as Controller;
 use yamiSample\Controller\Standard;
 
 class Error extends Standard {

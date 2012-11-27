@@ -2,7 +2,7 @@
 namespace yamiSample;
 
 use yamiSample\Controller\Standard;
-use yami\Http\Request;
+use Bacon\Http\Request;
 
 
 
